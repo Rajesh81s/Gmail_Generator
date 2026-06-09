@@ -108,6 +108,19 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         # Store the secret in context.user_data keyed by this message ID to handle refreshes securely
         context.user_data[f"otp_secret_{msg.message_id}"] = secret
+
+        # Clean up old secrets to prevent memory leaks in long-running processes
+        otp_keys = [k for k in context.user_data.keys() if k.startswith("otp_secret_")]
+        if len(otp_keys) > 50:
+            try:
+                # Sort by message_id (last token) to remove the oldest ones first
+                sorted_keys = sorted(otp_keys, key=lambda x: int(x.split("_")[-1]))
+                for k in sorted_keys[:-50]:
+                    context.user_data.pop(k, None)
+            except Exception:
+                # Fallback if key parsing fails
+                for k in otp_keys[:-50]:
+                    context.user_data.pop(k, None)
         return
 
     # 3. Fallback for unrecognized text

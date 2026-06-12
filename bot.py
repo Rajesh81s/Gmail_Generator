@@ -29,7 +29,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "🤖 <b>Personal Assistant Bot</b>\n\n"
         "Welcome! I have two utility features designed to make registration flows easy:\n\n"
         "1️⃣ <b>🎲 Account Generator</b>\n"
-        "Send any number between <b>1 and 30</b> (e.g. <code>15</code>) and I will generate "
+        "Send any number between <b>1 and 100</b> (e.g. <code>15</code>) and I will generate "
         "that many random account details. The outputs are fully formatted in <code>click-to-copy</code> code blocks!\n\n"
         "2️⃣ <b>🔑 OTP Verification (2FA)</b>\n"
         "Send a 2-Step Verification secret key (e.g. from Google's Authenticator setup) "
@@ -47,9 +47,9 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # 1. Check if the user entered a number (Account Generator)
     if text.isdigit():
         count = int(text)
-        if count < 1 or count > 30:
+        if count < 1 or count > 100:
             await update.message.reply_text(
-                "⚠️ <b>Invalid Quantity</b>\n\nPlease enter a number between <b>1 and 30</b>.",
+                "⚠️ <b>Invalid Quantity</b>\n\nPlease enter a number between <b>1 and 100</b>.",
                 parse_mode="HTML"
             )
             return
@@ -127,7 +127,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     fallback_text = (
         "❓ <b>Unrecognized Input</b>\n\n"
         "I didn't understand that message. Please send:\n"
-        "• A number from <b>1 to 30</b> to generate accounts.\n"
+        "• A number from <b>1 to 100</b> to generate accounts.\n"
         "• A valid <b>2FA secret key</b> to get an OTP.\n\n"
         "Send /start to show instructions."
     )
